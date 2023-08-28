@@ -72,10 +72,8 @@ function playUserCard(index) {
     displayPlayedCard();
 
     // Computer's turn immediately after user's turn
-    setTimeout(() => {
-      computerTurn();
-      displayPlayedCard();
-    }, 0);
+    computerTurn();
+    displayPlayedCard();
   }
 }
 
@@ -99,10 +97,8 @@ function drawUserCard() {
     displayUserHand();
 
     // Computer's turn immediately after user draws a card
-    setTimeout(() => {
-      computerTurn();
-      displayPlayedCard();
-    }, 0);
+    computerTurn();
+    displayPlayedCard();
   } else {
     console.log("No cards left in the deck!");
   }
