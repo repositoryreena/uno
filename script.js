@@ -70,16 +70,23 @@ function playUserCard(index) {
 
     displayUserHand();
     displayPlayedCard();
-
-    // Computer's turn immediately after user's turn
     computerTurn();
-    displayPlayedCard();
+    displayPlayedCard(); // Display after both user and computer play
   }
 }
 
 function computerTurn() {
-  const validComputerCards = computerHand.filter(card => canPlayCard(card));
+  let validComputerCards = computerHand.filter(card => canPlayCard(card));
   
+  if (validComputerCards.length === 0) {
+    if (deck.length > 0) {
+      const randomIndex = Math.floor(Math.random() * deck.length);
+      const drawnCard = deck.splice(randomIndex, 1)[0];
+      computerHand.push(drawnCard);
+      validComputerCards = computerHand.filter(card => canPlayCard(card));
+    }
+  }
+
   if (validComputerCards.length > 0) {
     const selectedCard = validComputerCards[Math.floor(Math.random() * validComputerCards.length)];
     playedCard = selectedCard;
@@ -88,6 +95,7 @@ function computerTurn() {
   }
 }
 
+
 function drawUserCard() {
   if (deck.length > 0) {
     const randomIndex = Math.floor(Math.random() * deck.length);
@@ -95,10 +103,8 @@ function drawUserCard() {
     
     userHand.push(drawnCard);
     displayUserHand();
-
-    // Computer's turn immediately after user draws a card
     computerTurn();
-    displayPlayedCard();
+    displayPlayedCard(); // Display after both user draws and computer plays
   } else {
     console.log("No cards left in the deck!");
   }
