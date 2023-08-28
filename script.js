@@ -79,6 +79,10 @@ function computerTurn() {
   let validComputerCards = computerHand.filter(card => canPlayCard(card));
   
   if (validComputerCards.length === 0) {
+    if (deck.length === 0) {
+      shuffleDiscardPile();
+    }
+
     if (deck.length > 0) {
       const randomIndex = Math.floor(Math.random() * deck.length);
       const drawnCard = deck.splice(randomIndex, 1)[0];
@@ -95,8 +99,33 @@ function computerTurn() {
   }
 }
 
+function shuffleDiscardPile() {
+  if (playedCard) {
+    deck.push(playedCard);
+    playedCard = null;
+  }
+
+  deck = deck.concat(computerHand);
+  deck = deck.concat(userHand);
+
+  computerHand = [];
+  userHand = [];
+
+  shuffleArray(deck);
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
 function drawUserCard() {
+  if (deck.length === 0) {
+    shuffleDiscardPile();
+  }
+
   if (deck.length > 0) {
     const randomIndex = Math.floor(Math.random() * deck.length);
     const drawnCard = deck.splice(randomIndex, 1)[0];
