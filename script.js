@@ -72,12 +72,13 @@ function playUserCard(index) {
     displayPlayedCard();
     computerTurn();
     displayPlayedCard(); // Display after both user and computer play
+    checkWin(); // Check for win condition
   }
 }
 
 function computerTurn() {
   let validComputerCards = computerHand.filter(card => canPlayCard(card));
-  
+
   if (validComputerCards.length === 0) {
     if (deck.length === 0) {
       shuffleDiscardPile();
@@ -97,7 +98,16 @@ function computerTurn() {
     const cardIndex = computerHand.findIndex(card => card === selectedCard);
     computerHand.splice(cardIndex, 1);
   }
+
+  if (computerHand.length === 1) {
+    console.log("Computer says Uno!");
+  }
+
+  checkWin();
 }
+
+
+
 
 function shuffleDiscardPile() {
   if (playedCard) {
@@ -134,9 +144,35 @@ function drawUserCard() {
     displayUserHand();
     computerTurn();
     displayPlayedCard(); // Display after both user draws and computer plays
+    checkWin(); // Check for win condition
   } else {
     console.log("No cards left in the deck!");
   }
+}
+
+function checkWin() {
+  if (userHand.length === 0) {
+    alert("Congratulations! You won!");
+    resetGame();
+  } else if (computerHand.length === 0) {
+    alert("Sorry, the computer won.");
+    resetGame();
+  }
+}
+
+
+function resetGame() {
+  userHand = [];
+  computerHand = [];
+  deck = [];
+  playedCard = null;
+
+  createDeck();
+  dealInitialCards(userHand);
+  dealInitialCards(computerHand);
+
+  displayUserHand();
+  displayPlayedCard();
 }
 
 function initializeEventListeners() {
